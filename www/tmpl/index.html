@@ -18,7 +18,7 @@
   <ul class="list list-unstyled">
     {{range .Books}}
     <li class="media">
-      <img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px">
+      <a href="/book/{{.Isbn}}"><img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px"></a>
       <div class="media-body">
         <h2 class="title">{{ .Title }} <small class="author"> {{ .PrintAuthors }}</small></h2>
         <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
