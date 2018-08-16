@@ -1,20 +1,40 @@
 {{template "base" .}}
 {{define "content"}}
 <h1>青森AJET図書室</h1>
-<ul class="list-unstyled">
-  {{range .Books}}
-  <li class="media">
-    <img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px">
-    <div class="media-body">
-      <h2>{{ .Title }} <small> {{ .PrintAuthors }}</small></h2>
-      <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
-      <p><strong>Description</strong>: {{ .ShortDesc }}</p>
+<div id="books-list">
+  <div class="form-row align-items-center">
+    <div class="col-auto">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <input type="text" class="search form-control" placeholder="Search">
+        <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
+        <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
+      </div>
     </div>
-  </li>
-  {{end}}
-</ul>
+  </div>
+
+  <ul class="list list-unstyled">
+    {{range .Books}}
+    <li class="media">
+      <img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px">
+      <div class="media-body">
+        <h2 class="title">{{ .Title }} <small class="author"> {{ .PrintAuthors }}</small></h2>
+        <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
+        <p><strong>Description</strong>: {{ .ShortDesc }}</p>
+      </div>
+    </li>
+    {{end}}
+  </ul>
+
+  <nav aria-label="book navigation">
+    <ul class="pagination">
+    </ul>
+  </nav>
+</div> <!-- end books-list -->
 
 {{end}}
 {{define "scripts"}}
-
+<script src="/js/search.js"></script>
 {{end}}
