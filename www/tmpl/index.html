@@ -1,0 +1,20 @@
+{{template "base" .}}
+{{define "content"}}
+<h1>青森AJET図書室</h1>
+<ul class="list-unstyled">
+  {{range .Books}}
+  <li class="media">
+    <img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px">
+    <div class="media-body">
+      <h2>{{ .Title }} <small> {{ .PrintAuthors }}</small></h2>
+      <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
+      <p><strong>Description</strong>: {{ .ShortDesc }}</p>
+    </div>
+  </li>
+  {{end}}
+</ul>
+
+{{end}}
+{{define "scripts"}}
+
+{{end}}

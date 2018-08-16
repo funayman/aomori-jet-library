@@ -1,0 +1,60 @@
+{{template "base" .}}
+
+{{ define "header" }}
+<h1>Current Book Listings</h1>
+{{ end }}
+
+{{define "content"}}
+
+<div id="books">
+  <div class="form-row align-items-center">
+    <div class="col-auto">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <input type="text" class="search form-control" placeholder="Search">
+        <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
+        <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
+      </div>
+    </div>
+  </div>
+
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ISBN</th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col"># Copies</th>
+      <th scope="col">Edit | Delete</th>
+    </tr>
+  </thead>
+  <tbody class="list">
+  {{ range .Books }}
+  <tr>
+    <th scope="row">{{ .Isbn }}</th>
+    <td class="title">{{ .Title }}</td>
+    <td class="author">{{ .PrintAuthors }}</td>
+    <td>{{ .Copies }}</td>
+    <td class="nmap">
+      <a href="/admin/book/{{ .Isbn }}" class="btn btn-warning btn-sm"><strong>EDIT</strong></a>
+      <a href="#" class="btn btn-danger btn-sm"><strong>DELETE</strong></a>
+    </td>
+  </tr>
+  {{ end }}
+  </tbody>
+</table>
+</div>
+{{end}}
+
+{{ define "scripts" }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+<script>
+var options = {
+  valueNames: [ 'title', 'author' ]
+};
+var userList = new List('books', options);
+</script>
+{{end}}
