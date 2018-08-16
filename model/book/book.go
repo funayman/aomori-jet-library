@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	Delim = ";"
+	Delim       = ";"
+	DefaultDesc = "No description available (╯°□°）╯︵ ┻━┻"
 )
 
 type Book struct {
@@ -76,7 +77,7 @@ func (b *Book) Merge(book *Book) error {
 		b.Lang = book.Lang
 	}
 
-	if b.ImgSrc == "" && book.ImgSrc != "" {
+	if (b.ImgSrc == "" || strings.Contains(b.ImgSrc, "isbndb")) && book.ImgSrc != "" && strings.Contains(b.ImgSrc, "nophoto") {
 		b.ImgSrc = book.ImgSrc
 	}
 

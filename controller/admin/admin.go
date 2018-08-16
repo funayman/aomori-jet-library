@@ -126,6 +126,10 @@ func buildBookFromForm(r *http.Request) (b *book.Book, err string) {
 		return
 	}
 
+	if b.Desc == "" {
+		b.Desc = book.DefaultDesc
+	}
+
 	if b.Copies < 1 {
 		err = "No. of Copies must be at least 1"
 		return
