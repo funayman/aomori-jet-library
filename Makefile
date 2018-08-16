@@ -22,7 +22,7 @@ release: clean pre $(PLATFORMS)
 windows: POSTFIX = .exe
 
 $(PLATFORMS):
-	GOOS=$(OS) GOARCH=$(ARCH) $(CC) build -o $(OUTPUT_DIR)/$(RELEASE)-$(VERSION)-$(OS)-$(ARCH)$(POSTFIX) $(BASE_PACKAGE)/cmd
+	GOOS=$(OS) GOARCH=$(ARCH) $(CC) build -o $(OUTPUT_DIR)/$(RELEASE)-$(VERSION)-$(OS)-$(ARCH)$(POSTFIX) # $(BASE_PACKAGE)/cmd
 
 all: test clean release
 
