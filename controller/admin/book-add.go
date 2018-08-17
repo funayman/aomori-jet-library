@@ -13,7 +13,7 @@ import (
 func BookAddGet(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("www/tmpl/admin/add.html", "www/tmpl/_base.html")
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("[BookAddGet] %s", err.Error())
 	}
 
 	b := book.New()
@@ -46,7 +46,7 @@ func BookAddPost(w http.ResponseWriter, r *http.Request) {
 
 	imgsrc, e := client.SaveCover(b.Isbn, b.ImgSrc)
 	if e != nil {
-		log.Fatal(e)
+		log.Printf("[BookAddPost] %s", e.Error())
 	}
 	b.ImgSrc = imgsrc
 	dberr := db.SQL.Save(b)

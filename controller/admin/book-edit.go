@@ -11,7 +11,7 @@ import (
 	"github.com/funayman/aomori-library/router"
 )
 
-func BookIsbnGet(w http.ResponseWriter, r *http.Request) {
+func BookEditGet(w http.ResponseWriter, r *http.Request) {
 	vars := router.GetParams(r)
 	isbn := vars["isbn"]
 
@@ -33,7 +33,7 @@ func BookIsbnGet(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func BookIsbnPost(w http.ResponseWriter, r *http.Request) {
+func BookEditPost(w http.ResponseWriter, r *http.Request) {
 	b, err := buildBookFromForm(r)
 	if err != "" {
 		tmpError = err
@@ -44,9 +44,11 @@ func BookIsbnPost(w http.ResponseWriter, r *http.Request) {
 
 	imgsrc, e := client.SaveCover(b.Isbn, b.ImgSrc)
 	if e != nil {
-		log.Fatal(e)
+		log.Printf("[BookIsbnPost] %s", e.Error())
+	} else {
+		b.ImgSrc = imgsrc
 	}
-	b.ImgSrc = imgsrc
+
 	dberr := db.SQL.Save(b)
 	if dberr != nil {
 		if dberr.Error() == "database is in read-only mode" {

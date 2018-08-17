@@ -42,8 +42,8 @@ func Load() {
 	router.Route("/admin/book/add", BookAddGet).Methods("GET")
 	router.Route("/admin/book/add", BookAddPost).Methods("POST")
 
-	router.Route("/admin/book/{isbn}", BookIsbnGet).Methods("GET")
-	router.Route("/admin/book/{isbn}", BookIsbnPost).Methods("POST")
+	router.Route("/admin/book/{isbn}", BookEditGet).Methods("GET")
+	router.Route("/admin/book/{isbn}", BookEditPost).Methods("POST")
 
 	router.Route("/admin/books", Books).Methods("GET")
 }
