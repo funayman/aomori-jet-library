@@ -78,7 +78,7 @@ func (b *Book) Merge(book *Book) error {
 		b.Lang = book.Lang
 	}
 
-	if (b.ImgSrc == "" || strings.Contains(b.ImgSrc, "isbndb")) && book.ImgSrc != "" && strings.Contains(b.ImgSrc, "nophoto") {
+	if (b.ImgSrc == "" || strings.Contains(b.ImgSrc, "isbndb")) && book.ImgSrc != "" && !strings.Contains(b.ImgSrc, "nophoto") {
 		b.ImgSrc = book.ImgSrc
 	}
 
