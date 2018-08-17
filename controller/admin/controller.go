@@ -8,6 +8,7 @@ import (
 
 	"github.com/funayman/aomori-library/model"
 	"github.com/funayman/aomori-library/model/book"
+	"github.com/funayman/aomori-library/router"
 )
 
 var (
@@ -28,7 +29,20 @@ type BookPageWithError struct {
 }
 
 func Load() {
-	// Do nothing
+	// Unlike the normal controller running init commands,
+	// All routes must be defined in the Load() function
+	// According to documentation:
+	// 		init() is always called, regardless if there's main or not,
+	// 		if you import a package that has an init function, it will be executed
+	router.Route("/api/v1/admin/client/isbn/{isbn}", ClientIsbn)
+
+	router.Route("/admin/book/add", BookAddGet).Methods("GET")
+	router.Route("/admin/book/add", BookAddPost).Methods("POST")
+
+	router.Route("/admin/book/{isbn}", BookIsbnGet).Methods("GET")
+	router.Route("/admin/book/{isbn}", BookIsbnPost).Methods("POST")
+
+	router.Route("/admin/books", Books).Methods("GET")
 }
 
 /* HELPER FUNCTIONS */

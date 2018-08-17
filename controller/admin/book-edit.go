@@ -10,11 +10,6 @@ import (
 	"github.com/funayman/aomori-library/router"
 )
 
-func init() {
-	router.Route("/admin/book/{isbn}", BookIsbnGet).Methods("GET")
-	router.Route("/admin/book/{isbn}", BookIsbnPost).Methods("POST")
-}
-
 func BookIsbnGet(w http.ResponseWriter, r *http.Request) {
 	vars := router.GetParams(r)
 	isbn := vars["isbn"]
