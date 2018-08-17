@@ -9,6 +9,7 @@ import (
 
 var (
 	clients []Client
+	client  *http.Client
 )
 
 const (
@@ -22,10 +23,11 @@ type Client interface {
 }
 
 func Init() {
+	client = &http.Client{}
 	clients = []Client{
-		&IsbnDbClient{key: IsbnDbKey, client: http.Client{}},
-		&GoodReadsClient{key: GoodReadsKey, client: http.Client{}},
-		&OpenLibraryClient{client: http.Client{}},
+		&IsbnDbClient{key: IsbnDbKey, client: client},
+		&GoodReadsClient{key: GoodReadsKey, client: client},
+		&OpenLibraryClient{client: client},
 	}
 }
 

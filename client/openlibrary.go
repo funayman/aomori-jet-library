@@ -14,7 +14,7 @@ import (
 type OpenLibraryClient struct {
 	key    string
 	secret string
-	client http.Client
+	client *http.Client
 }
 
 type openLibraryApiResponse struct {

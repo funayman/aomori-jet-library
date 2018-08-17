@@ -18,7 +18,7 @@ const (
 type IsbnDbClient struct {
 	key    string
 	secret string
-	client http.Client
+	client *http.Client
 }
 
 type IsbnDbResponse struct {

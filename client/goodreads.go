@@ -19,7 +19,7 @@ const (
 type GoodReadsClient struct {
 	key    string
 	secret string
-	client http.Client
+	client *http.Client
 }
 
 type goodReadsResponse struct {
