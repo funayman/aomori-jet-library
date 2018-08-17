@@ -17,9 +17,9 @@ var (
 	DefaultConnection = "ringo-toshoshutsu.db"
 )
 
-func Connect() {
+func Connect(connection string, ro bool) {
 	var err error
-	SQL, err = storm.Open(DefaultConnection, storm.BoltOptions(0600, &bolt.Options{Timeout: 1 * time.Second}))
+	SQL, err = storm.Open(connection, storm.BoltOptions(0600, &bolt.Options{Timeout: 1 * time.Second, ReadOnly: ro}))
 	if err != nil {
 		log.Fatal("sql open error: ", err)
 	}

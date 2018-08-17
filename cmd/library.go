@@ -11,8 +11,6 @@ import (
 	"github.com/funayman/aomori-library/client"
 	"github.com/funayman/aomori-library/controller"
 	"github.com/funayman/aomori-library/db"
-	"github.com/funayman/aomori-library/router"
-	"github.com/funayman/aomori-library/server"
 )
 
 const (
@@ -22,6 +20,7 @@ const (
 var (
 	cmdName    = os.Args[0]
 	dbReadOnly bool
+	database   string
 	cfgFile    string
 )
 
@@ -36,18 +35,18 @@ The Aomori JET Public Library is an open sourced web application
 written in Go. And is made possible by the help of Dan Hantos
 and Dave Derderian (https://drt.sh).`,
 
-	Run: func(cmd *cobra.Command, args []string) {
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		fmt.Println("connecting to db...")
-		db.Connect()
+		db.Connect(database, dbReadOnly)
 
 		fmt.Println("initing isbn/book clients")
 		client.Init()
 
 		fmt.Println("loading controllers")
 		controller.Load()
+	},
 
-		fmt.Println("starting server...")
-		server.Start(router.Instance(), server.Server{Port: 8081})
+	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
 
@@ -68,6 +67,7 @@ func init() {
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/"+defaultConfigFile+".yaml)")
 
+	rootCmd.PersistentFlags().StringVarP(&database, "database", "d", db.DefaultConnection, "connects to BoltDB database at specified location (default ./"+db.DefaultConnection+")")
 	rootCmd.PersistentFlags().BoolVarP(&dbReadOnly, "readonly", "r", false, "connects to database in read-only mode. changes cannot be made")
 }
 

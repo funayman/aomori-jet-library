@@ -49,7 +49,17 @@ func BookAddPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db.SQL.Save(b)
+	dberr := db.SQL.Save(b)
+	if dberr != nil {
+		if dberr.Error() == "database is in read-only mode" {
+			tmpError = dberr.Error() + ", please restart the server"
+		} else {
+			tmpError = dberr.Error() + ", call Dave to fix"
+		}
+
+		tmpBook = b
+		BookAddGet(w, r)
+	}
 
 	http.Redirect(w, r, "/admin/books", 302)
 }
