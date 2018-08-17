@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -34,6 +35,8 @@ func Load() {
 	// According to documentation:
 	// 		init() is always called, regardless if there's main or not,
 	// 		if you import a package that has an init function, it will be executed
+	router.Route("/api/v1/book/isbn/{isbn}", DeleteBook).Methods("DELETE")
+
 	router.Route("/api/v1/admin/client/isbn/{isbn}", ClientIsbn)
 
 	router.Route("/admin/book/add", BookAddGet).Methods("GET")
@@ -45,7 +48,16 @@ func Load() {
 	router.Route("/admin/books", Books).Methods("GET")
 }
 
+type DeleteResponse struct {
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
+}
+
 /* HELPER FUNCTIONS */
+func writeJsonRequest(w http.ResponseWriter, status int, data interface{}) {
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(data)
+}
 
 func buildBookFromForm(r *http.Request) (b *book.Book, err string) {
 	r.ParseForm()
