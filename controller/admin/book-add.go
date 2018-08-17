@@ -59,6 +59,7 @@ func BookAddPost(w http.ResponseWriter, r *http.Request) {
 
 		tmpBook = b
 		BookAddGet(w, r)
+		return
 	}
 
 	http.Redirect(w, r, "/admin/books", 302)
