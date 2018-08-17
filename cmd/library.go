@@ -15,20 +15,27 @@ import (
 	"github.com/funayman/aomori-library/server"
 )
 
-var cfgFile string
+const (
+	defaultConfigFile = ".honshitsu"
+)
+
+var (
+	cmdName    = os.Args[0]
+	dbReadOnly bool
+	cfgFile    string
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "cliapp",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use:   cmdName,
+	Short: "The Aomori JET Public Library",
+	Long: `This allows you to run the application server along with other
+helpful commands.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
+The Aomori JET Public Library is an open sourced web application
+written in Go. And is made possible by the help of Dan Hantos
+and Dave Derderian (https://drt.sh).`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("connecting to db...")
 		db.Connect()
@@ -59,11 +66,9 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cliapp.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/"+defaultConfigFile+".yaml)")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolVarP(&dbReadOnly, "readonly", "r", false, "connects to database in read-only mode. changes cannot be made")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -79,9 +84,10 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".cliapp" (without extension).
+		// Search config in home directory and current directory with name ".honshitsu" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".cliapp")
+		viper.AddConfigPath(".")
+		viper.SetConfigName(".honshitsu")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
