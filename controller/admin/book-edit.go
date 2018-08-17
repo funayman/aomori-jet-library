@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/funayman/aomori-library/client"
 	"github.com/funayman/aomori-library/db"
 	"github.com/funayman/aomori-library/model/book"
 	"github.com/funayman/aomori-library/router"
@@ -41,7 +42,23 @@ func BookIsbnPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db.SQL.Save(b)
+	imgsrc, e := client.SaveCover(b.Isbn, b.ImgSrc)
+	if e != nil {
+		log.Fatal(e)
+	}
+	b.ImgSrc = imgsrc
+	dberr := db.SQL.Save(b)
+	if dberr != nil {
+		if dberr.Error() == "database is in read-only mode" {
+			tmpError = dberr.Error() + ", please restart the server"
+		} else {
+			tmpError = dberr.Error() + ", call Dave to fix"
+		}
+
+		tmpBook = b
+		BookAddGet(w, r)
+		return
+	}
 
 	http.Redirect(w, r, "/admin/books", 302)
 }
