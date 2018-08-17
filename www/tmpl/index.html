@@ -8,7 +8,7 @@
         <div class="input-group-prepend">
           <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
         </div>
-        <input type="text" class="fuzzy-search form-control" placeholder="Search">
+        <input type="text" class="search form-control" placeholder="Search">
         <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
         <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
       </div>
@@ -22,7 +22,7 @@
       <div class="media-body">
         <h2 class="title">{{ .Title }} <small class="author"> {{ .PrintAuthors }}</small></h2>
         <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
-        <p><strong>Description</strong>: {{ .ShortDesc }}</p>
+        <p><strong>Description</strong>: <span class="shortdesc">{{ .ShortDesc }}</span></p>
       </div>
     </li>
     {{end}}
