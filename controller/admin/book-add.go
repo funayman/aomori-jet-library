@@ -7,13 +7,7 @@ import (
 
 	"github.com/funayman/aomori-library/db"
 	"github.com/funayman/aomori-library/model/book"
-	"github.com/funayman/aomori-library/router"
 )
-
-func init() {
-	router.Route("/admin/book/add", BookAddGet).Methods("GET")
-	router.Route("/admin/book/add", BookAddPost).Methods("POST")
-}
 
 func BookAddGet(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("www/tmpl/admin/add.html", "www/tmpl/_base.html")

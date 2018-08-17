@@ -7,12 +7,7 @@ import (
 
 	"github.com/funayman/aomori-library/db"
 	"github.com/funayman/aomori-library/model/book"
-	"github.com/funayman/aomori-library/router"
 )
-
-func init() {
-	router.Route("/admin/books", Books).Methods("GET")
-}
 
 func Books(w http.ResponseWriter, r *http.Request) {
 	var books []*book.Book

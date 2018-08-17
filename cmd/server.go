@@ -17,14 +17,17 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/funayman/aomori-library/controller"
+	"github.com/funayman/aomori-library/controller/admin"
 	"github.com/funayman/aomori-library/router"
 	"github.com/funayman/aomori-library/server"
 	"github.com/spf13/cobra"
 )
 
 var (
-	port int
-	ip   string
+	port      int
+	ip        string
+	withAdmin bool
 )
 
 // serverCmd represents the server command
@@ -32,6 +35,14 @@ var serverCmd = &cobra.Command{
 	Use:   "server",
 	Short: "run in server mode",
 	// Long: `This is the log desc`,
+	PreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println("loading controllers")
+		controller.Load()
+
+		if withAdmin {
+			admin.Load()
+		}
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("starting server...")
 		server.Start(router.Instance(), server.Server{Port: 8081})
@@ -51,4 +62,5 @@ func init() {
 	// is called directly, e.g.:
 	serverCmd.Flags().IntVar(&port, "port", 8081, "port for the server to run on (default 8081)")
 	serverCmd.Flags().StringVar(&ip, "ip", "", "IP address for the server (default is localhost)")
+	serverCmd.Flags().BoolVarP(&withAdmin, "admin", "", false, "allows all admin routes/API calls to be loaded")
 }

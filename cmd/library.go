@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/funayman/aomori-library/client"
-	"github.com/funayman/aomori-library/controller"
 	"github.com/funayman/aomori-library/db"
 )
 
@@ -42,8 +41,6 @@ and Dave Derderian (https://drt.sh).`,
 		fmt.Println("initing isbn/book clients")
 		client.Init()
 
-		fmt.Println("loading controllers")
-		controller.Load()
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
