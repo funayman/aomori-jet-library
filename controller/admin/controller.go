@@ -74,6 +74,7 @@ func buildBookFromForm(r *http.Request) (b *book.Book, err string) {
 		b.Authors = append(b.Authors, a)
 	}
 	b.Desc = r.FormValue("desc")
+	b.Genre = r.FormValue("genre")
 	b.Lang = r.FormValue("lang")
 	b.ImgSrc = r.FormValue("imgsrc")
 

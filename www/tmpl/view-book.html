@@ -8,9 +8,10 @@
     <p><strong>Written By: </strong>{{.Book.PrintAuthors}}</p>
     <p>{{.Book.Desc}}</p>
     <p>
-      <strong>Lang</strong>:{{if .Book.Lang}}{{.Book.Lang}}{{else}}N/A{{end}} | 
-      <strong>Pages</strong>:{{if .Book.Pages}}{{.Book.Pages}}{{else}}N/A{{end}} | 
-      <strong># Copies</strong>:{{.Book.Copies}}
+      <strong>Lang</strong>: {{if .Book.Lang}}{{.Book.Lang}}{{else}}N/A{{end}} | 
+      <strong>Pages</strong>: {{if .Book.Pages}}{{.Book.Pages}}{{else}}N/A{{end}} | 
+      <strong># Copies</strong>: {{.Book.Copies}} | 
+      <strong>Genre</strong>: {{.Book.Genre}}
     </p>
     {{if .Book.GoodReadsId | or .Book.OpenLibraryId | or .Book.GoogleBooksId}}
     <p>Check it out on 

@@ -23,6 +23,7 @@ type Book struct {
 	Pages   int
 	Desc    string
 	Copies  int
+	Genre   string
 
 	GoodReadsId   string
 	OpenLibraryId string
