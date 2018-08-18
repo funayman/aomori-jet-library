@@ -1,51 +1,54 @@
 {{template "base" .}}
 
 {{ define "header" }}
-<h1>Current Book Listings</h1>
+{{template "nav-admin" .}}
 {{ end }}
 
 {{define "content"}}
-
-<div id="books">
-  <div class="form-row align-items-center">
-    <div class="col-auto">
-      <div class="input-group mb-2">
-        <div class="input-group-prepend">
-          <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+<main>
+  <section class="container" style="margin-top:58px;">
+    <h1>Current Book Listings</h1>
+    <div id="books">
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+            </div>
+            <input type="text" class="search form-control" placeholder="Search">
+            <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
+            <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
+          </div>
         </div>
-        <input type="text" class="search form-control" placeholder="Search">
-        <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
-        <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
       </div>
+
+
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">ISBN</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">View | Edit | Delete</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          {{ range .Books }}
+          <tr>
+            <th class="isbn" scope="row">{{ .Isbn }}</th>
+            <td class="title">{{ .Title }}</td>
+            <td class="author">{{ .PrintAuthors }}</td>
+            <td class="nmap">
+              <a href="/book/{{ .Isbn }}" class="btn btn-success btn-sm"><strong>VIEW</strong></a>
+              <a href="/admin/book/{{ .Isbn }}" class="btn btn-warning btn-sm"><strong>EDIT</strong></a>
+              <button type="button" class="btn btn-danger btn-sm" data-isbn="{{.Isbn}}" data-title="{{.Title}}" data-target="#del-modal" data-toggle="modal"><strong>DELETE</strong></a>
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
     </div>
-  </div>
-
-
-<table class="table table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">ISBN</th>
-      <th scope="col">Title</th>
-      <th scope="col">Author</th>
-      <th scope="col">View | Edit | Delete</th>
-    </tr>
-  </thead>
-  <tbody class="list">
-  {{ range .Books }}
-  <tr>
-    <th class="isbn" scope="row">{{ .Isbn }}</th>
-    <td class="title">{{ .Title }}</td>
-    <td class="author">{{ .PrintAuthors }}</td>
-    <td class="nmap">
-      <a href="/book/{{ .Isbn }}" class="btn btn-success btn-sm"><strong>VIEW</strong></a>
-      <a href="/admin/book/{{ .Isbn }}" class="btn btn-warning btn-sm"><strong>EDIT</strong></a>
-      <button type="button" class="btn btn-danger btn-sm" data-isbn="{{.Isbn}}" data-title="{{.Title}}" data-target="#del-modal" data-toggle="modal"><strong>DELETE</strong></a>
-    </td>
-  </tr>
-  {{ end }}
-  </tbody>
-</table>
-</div>
+  </section>
 
 <div class="modal fade" id="del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -64,6 +67,7 @@
     </div>
   </div>
 </div>
+</main>
 {{end}}
 
 {{ define "scripts" }}

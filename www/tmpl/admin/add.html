@@ -1,138 +1,147 @@
 {{template "base" .}}
 
 {{ define "header" }}
-<h1>{{ .Header }}</h1>
+{{template "nav-admin" .}}
 {{ end }}
 
 {{define "content"}}
-<div class="row">
-  <div class="col">
-    <div id="status-alert" class="alert alert-danger" role="alert"{{ if not .Error }}style="display: none;"{{ end }}>
-      {{ .Error }}
+<main>
+  <section class="container" style="margin-top:58px;">
+    <div class="row">
+      <div class="col">
+        <h1>{{ .Header }}</h1>
+        <div id="status-alert" class="alert alert-danger" role="alert"{{ if not .Error }}style="display: none;"{{ end }}>
+          {{ .Error }}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<div class="row">
-  <div class="col">
-    <h2>Search Databases by ISBN</h2>
-    <form class="form-inline">
-      <div class="input-group mb-2 mr-sm-2">
-        <label for="qisbn">ISBN</label>
+  <section class="container">
+    <div class="row">
+      <div class="col">
+        <h2>Search Databases by ISBN</h2>
+        <form class="form-inline">
+          <div class="input-group mb-2 mr-sm-2">
+            <label for="qisbn">ISBN</label>
+          </div>
+          <div class="input-group mb-2 mr-sm-2">
+            <input id="qisbn" class="form-control" type="text" placeholder="9780545010221" />
+          </div>
+          <div class="input-group mb-2 mr-sm-2">
+            <button id="btnGetData" type="button" class="btn btn-info">
+              <i id="spinner" class="fa fa-circle-o-notch fa-spin" style="display: none;"></i> Get Data
+            </button>
+          </div>
+        </form>
       </div>
-      <div class="input-group mb-2 mr-sm-2">
-        <input id="qisbn" class="form-control" type="text" placeholder="9780545010221" />
-      </div>
-      <div class="input-group mb-2 mr-sm-2">
-        <button id="btnGetData" type="button" class="btn btn-info">
-          <i id="spinner" class="fa fa-circle-o-notch fa-spin" style="display: none;"></i> Get Data
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+    </div>
+  </section>
 
-<div class="row">
-  <div class="col">
-<div class="row">
-  <div class="col-8">
-    <h2>New Book Data</h2>
-    <form id="bookForm" method="POST">
+  <section class="container">
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col-8">
+            <h2>New Book Data</h2>
+            <form id="bookForm" method="POST">
 
-      <div class="form-group row">
-        <label for="isbn" class="col-sm-2 col-form-label">ISBN</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="isbn" id="isbn" placeholder="9780545010221" value="{{ .Book.Isbn }}">
+              <div class="form-group row">
+                <label for="isbn" class="col-sm-2 col-form-label">ISBN</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="isbn" id="isbn" placeholder="9780545010221" value="{{ .Book.Isbn }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="isbn10" class="col-sm-2 col-form-label">ISBN 10</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="isbn10" id="isbn10" placeholder="0545010225" value="{{ .Book.Isbn10 }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="Harry Potter and the Deathly Hallows" value="{{ .Book.Title }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="authors" class="col-sm-2 col-form-label">Author(s)</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="authors" id="authors" placeholder="J.K. Rowling; Mary GrandPre (use semi colon to separate)" value="{{ .Book.PrintAuthors }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="desc" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" name="desc" id="desc" placeholder="Harry Potter is leaving Privet Drive for the last time. But as he climbs...">{{ if .Book.Desc }}{{ .Book.Desc }}{{ end }}</textarea>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="genre" class="col-sm-2 col-form-label">Genre</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="genre" id="genre" placeholder="Fantasy">{{ if .Book.Genre }}{{ .Book.Genre }}{{ end }}</input>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="lang" class="col-sm-2 col-form-label">Language</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="lang" id="lang" placeholder="English (UK)" value="{{ .Book.Lang }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="imgsrc" class="col-sm-2 col-form-label">Image URL</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="imgsrc" id="imgsrc" placeholder="https://images.isbndb.com/covers/02/21/9780545010221.jpg" value="{{ .Book.ImgSrc }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="pages" class="col-sm-2 col-form-label">No. of Pages</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" name="pages" id="pages" placeholder="763" value="{{ .Book.Pages }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="copies" class="col-sm-2 col-form-label">No. of Copies</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" name="copies" id="copies" placeholder="1" value="{{ .Book.Copies }}">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-4">
+                  <label for="goodreadsid" class="">GoodReads ID</label>
+                  <input type="text" class="form-control" name="goodreadsid" id="goodreadsid" placeholder="136251" value="{{ .Book.GoodReadsId }}">
+                </div>
+                <div class="col-4">
+                  <label for="openlibraryid" class="">OpenLibrary ID</label>
+                  <input type="text" class="form-control" name="openlibraryid" id="openlibraryid" placeholder="OL82586W" value="{{ .Book.OpenLibraryId }}">
+                </div>
+                <div class="col-4">
+                  <label for="googlebooksid" class="">Google Books ID</label>
+                  <input type="text" class="form-control" name="googlebooksid" id="googlebooksid" placeholder="GZAoAQAAIAAJ" value="{{ .Book.GoogleBooksId }}">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg btn-block" />Save Book</button>
+            </form>
+          </div>
+          <div class="col-4">
+            <img class="img-fluid" id="cover-preview" src="{{ .Book.ImgSrc }}" alt="Book Cover Preview" />
+          </div>
         </div>
       </div>
-
-      <div class="form-group row">
-        <label for="isbn10" class="col-sm-2 col-form-label">ISBN 10</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="isbn10" id="isbn10" placeholder="0545010225" value="{{ .Book.Isbn10 }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="title" class="col-sm-2 col-form-label">Title</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="title" id="title" placeholder="Harry Potter and the Deathly Hallows" value="{{ .Book.Title }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="authors" class="col-sm-2 col-form-label">Author(s)</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="authors" id="authors" placeholder="J.K. Rowling; Mary GrandPre (use semi colon to separate)" value="{{ .Book.PrintAuthors }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="desc" class="col-sm-2 col-form-label">Description</label>
-        <div class="col-sm-10">
-          <textarea class="form-control" name="desc" id="desc" placeholder="Harry Potter is leaving Privet Drive for the last time. But as he climbs...">{{ if .Book.Desc }}{{ .Book.Desc }}{{ end }}</textarea>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="genre" class="col-sm-2 col-form-label">Genre</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="genre" id="genre" placeholder="Fantasy">{{ if .Book.Genre }}{{ .Book.Genre }}{{ end }}</input>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="lang" class="col-sm-2 col-form-label">Language</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="lang" id="lang" placeholder="English (UK)" value="{{ .Book.Lang }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="imgsrc" class="col-sm-2 col-form-label">Image URL</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="imgsrc" id="imgsrc" placeholder="https://images.isbndb.com/covers/02/21/9780545010221.jpg" value="{{ .Book.ImgSrc }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="pages" class="col-sm-2 col-form-label">No. of Pages</label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" name="pages" id="pages" placeholder="763" value="{{ .Book.Pages }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="copies" class="col-sm-2 col-form-label">No. of Copies</label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" name="copies" id="copies" placeholder="1" value="{{ .Book.Copies }}">
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <div class="col-4">
-          <label for="goodreadsid" class="">GoodReads ID</label>
-          <input type="text" class="form-control" name="goodreadsid" id="goodreadsid" placeholder="136251" value="{{ .Book.GoodReadsId }}">
-        </div>
-        <div class="col-4">
-          <label for="openlibraryid" class="">OpenLibrary ID</label>
-          <input type="text" class="form-control" name="openlibraryid" id="openlibraryid" placeholder="OL82586W" value="{{ .Book.OpenLibraryId }}">
-        </div>
-        <div class="col-4">
-          <label for="googlebooksid" class="">Google Books ID</label>
-          <input type="text" class="form-control" name="googlebooksid" id="googlebooksid" placeholder="GZAoAQAAIAAJ" value="{{ .Book.GoogleBooksId }}">
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary btn-lg btn-block" />Save Book</button>
-    </form>
-  </div>
-  <div class="col-4">
-    <img class="img-fluid" id="cover-preview" src="{{ .Book.ImgSrc }}" alt="Book Cover Preview" />
-  </div>
-</div>
-  </div>
-</div>
+    </div>
+  </section>
+</main>
 {{end}}
 
 {{define "scripts"}}

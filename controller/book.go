@@ -19,7 +19,7 @@ func ViewBook(w http.ResponseWriter, r *http.Request) {
 	vars := router.GetParams(r)
 	isbn := vars["isbn"]
 
-	t, err := template.ParseFiles("www/tmpl/view-book.html", "www/tmpl/_base.html")
+	t, err := template.ParseFiles("www/tmpl/view-book.html", "www/tmpl/_nav.html", "www/tmpl/_base.html")
 	if err != nil {
 		log.Printf("[ViewBook:%s] - %s", r.URL.EscapedPath(), err.Error())
 	}

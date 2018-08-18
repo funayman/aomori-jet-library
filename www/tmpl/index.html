@@ -1,39 +1,47 @@
 {{template "base" .}}
+
+{{ define "header" }}
+{{template "nav" .}}
+{{ end }}
+
 {{define "content"}}
-<h1>青森AJET図書室</h1>
-<div id="books-list">
-  <div class="form-row align-items-center">
-    <div class="col-auto">
-      <div class="input-group mb-2">
-        <div class="input-group-prepend">
-          <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+<main>
+  <section class="container" style="margin-top:58px">
+    <h1>青森AJET図書室</h1>
+    <div id="books-list">
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+            </div>
+            <input type="text" class="search form-control" placeholder="Search">
+            <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
+            <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
+          </div>
         </div>
-        <input type="text" class="search form-control" placeholder="Search">
-        <button class="ml-2 sort btn btn-small btn-primary" data-sort="title">Sort by Title</button>
-        <button class="ml-2 sort btn btn-small btn-primary" data-sort="author">Sort by Author</button>
       </div>
-    </div>
-  </div>
 
-  <ul class="list list-unstyled">
-    {{range .Books}}
-    <li class="media">
-      <a href="/book/{{.Isbn}}"><img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px"></a>
-      <div class="media-body">
-        <h2 class="title">{{ .Title }} <small class="author"> {{ .PrintAuthors }}</small></h2>
-        <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
-        <p><strong>Description</strong>: <span class="shortdesc">{{ .ShortDesc }}</span></p>
-      </div>
-    </li>
-    {{end}}
-  </ul>
+      <ul class="list list-unstyled">
+        {{range .Books}}
+        <li class="media">
+          <a href="/book/{{.Isbn}}"><img class="mr-3 img-thumbnail" src="{{ .ImgSrc }}" alt="Generic placeholder image" style="max-width:175px"></a>
+          <div class="media-body">
+            <h2 class="title">{{ .Title }} <small class="author"> {{ .PrintAuthors }}</small></h2>
+            <p><strong>ISBN</strong>: {{ .Isbn }} <strong>ISBN 10</strong>: {{ .Isbn10 }}</p>
+            <p><strong>Description</strong>: <span class="shortdesc">{{ .ShortDesc }}</span></p>
+          </div>
+        </li>
+        {{end}}
+      </ul>
 
-  <nav aria-label="book navigation">
-    <ul class="pagination">
-    </ul>
-  </nav>
-</div> <!-- end books-list -->
-
+      <nav aria-label="book navigation">
+        <ul class="pagination">
+        </ul>
+      </nav>
+    </div> <!-- end books-list -->
+  </section>
+</main>
 {{end}}
 {{define "scripts"}}
 <script src="/js/search.js"></script>

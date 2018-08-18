@@ -26,7 +26,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	t, err := template.ParseFiles("www/tmpl/index.html", "www/tmpl/_base.html")
+	t, err := template.ParseFiles("www/tmpl/index.html", "www/tmpl/_nav.html", "www/tmpl/_base.html")
 	if err != nil {
 		log.Println(err)
 	}

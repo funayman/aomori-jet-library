@@ -11,7 +11,7 @@ import (
 )
 
 func BookAddGet(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("www/tmpl/admin/add.html", "www/tmpl/_base.html")
+	t, err := template.ParseFiles("www/tmpl/admin/add.html", "www/tmpl/_nav.html", "www/tmpl/_base.html")
 	if err != nil {
 		log.Printf("[BookAddGet] %s", err.Error())
 	}

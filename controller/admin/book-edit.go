@@ -11,11 +11,13 @@ import (
 	"github.com/funayman/aomori-library/router"
 )
 
+var ebook *book.Book
+
 func BookEditGet(w http.ResponseWriter, r *http.Request) {
 	vars := router.GetParams(r)
 	isbn := vars["isbn"]
 
-	t, err := template.ParseFiles("www/tmpl/admin/add.html", "www/tmpl/_base.html")
+	t, err := template.ParseFiles("www/tmpl/admin/add.html", "www/tmpl/_nav.html", "www/tmpl/_base.html")
 	if err != nil {
 		log.Println(err)
 	}
@@ -25,6 +27,7 @@ func BookEditGet(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+	ebook = &b
 
 	t.Execute(w, &BookPageWithError{
 		Title:  "Edit Book",
@@ -42,11 +45,14 @@ func BookEditPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	imgsrc, e := client.SaveCover(b.Isbn, b.ImgSrc)
-	if e != nil {
-		log.Printf("[BookIsbnPost] %s", e.Error())
-	} else {
-		b.ImgSrc = imgsrc
+	// if ImgSrc is different then save
+	if b.ImgSrc != ebook.ImgSrc {
+		imgsrc, e := client.SaveCover(b.Isbn, b.ImgSrc)
+		if e != nil {
+			log.Printf("[BookIsbnPost] %s", e.Error())
+		} else {
+			b.ImgSrc = imgsrc
+		}
 	}
 
 	dberr := db.SQL.Save(b)
