@@ -27,18 +27,17 @@
       <th scope="col">ISBN</th>
       <th scope="col">Title</th>
       <th scope="col">Author</th>
-      <th scope="col"># Copies</th>
-      <th scope="col">Edit | Delete</th>
+      <th scope="col">View | Edit | Delete</th>
     </tr>
   </thead>
   <tbody class="list">
   {{ range .Books }}
   <tr>
-    <th scope="row">{{ .Isbn }}</th>
+    <th class="isbn" scope="row">{{ .Isbn }}</th>
     <td class="title">{{ .Title }}</td>
     <td class="author">{{ .PrintAuthors }}</td>
-    <td>{{ .Copies }}</td>
     <td class="nmap">
+      <a href="/book/{{ .Isbn }}" class="btn btn-success btn-sm"><strong>VIEW</strong></a>
       <a href="/admin/book/{{ .Isbn }}" class="btn btn-warning btn-sm"><strong>EDIT</strong></a>
       <button type="button" class="btn btn-danger btn-sm" data-isbn="{{.Isbn}}" data-title="{{.Title}}" data-target="#del-modal" data-toggle="modal"><strong>DELETE</strong></a>
     </td>
@@ -70,7 +69,7 @@
 {{ define "scripts" }}
 <script>
 var options = {
-  valueNames: [ 'title', 'author' ]
+  valueNames: [ 'title', 'author', 'isbn']
 };
 var userList = new List('books', options);
 
