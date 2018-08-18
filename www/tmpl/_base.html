@@ -18,9 +18,15 @@
   </head>
 
   <body>
-    {{block "header" .}}{{end}}
-    {{block "content" .}}{{end}}
-    {{block "footer" .}}{{end}}
+    <header>
+      {{block "header" .}}{{end}}
+    </header>
+    <main>
+      {{block "content" .}}{{end}}
+    </main>
+    <footer>
+      {{block "footer" .}}{{end}}
+    </footer>
   </body>
   {{block "scripts" .}}{{end}}
 </html>
