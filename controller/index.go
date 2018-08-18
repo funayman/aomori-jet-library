@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 
@@ -26,10 +25,12 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	t, err := template.ParseFiles("www/tmpl/index.html", "www/tmpl/_nav.html", "www/tmpl/_base.html")
-	if err != nil {
+	// t, err := template.ParseFiles("www/tmpl/index.html", "www/tmpl/_nav.html", "www/tmpl/_base.html")
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+
+	if err := mT["index.html"].Execute(w, &page{Title: "Aomori AJET Library", Books: books}); err != nil {
 		log.Println(err)
 	}
-
-	t.Execute(w, &page{Title: "Aomori AJET Library", Books: books})
 }
