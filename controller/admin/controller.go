@@ -2,7 +2,11 @@ package admin
 
 import (
 	"encoding/json"
+	"html/template"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -12,9 +16,14 @@ import (
 	"github.com/funayman/aomori-library/router"
 )
 
+const (
+	templateDir = "www/tmpl"
+)
+
 var (
 	tmpError string
 	tmpBook  *book.Book
+	mT       map[string]*template.Template
 )
 
 type BasicPage struct {
@@ -30,6 +39,7 @@ type BookPageWithError struct {
 }
 
 func Load() {
+	parseAdminTemplates()
 	// Unlike the normal controller running init commands,
 	// All routes must be defined in the Load() function
 	// According to documentation:
@@ -39,18 +49,59 @@ func Load() {
 
 	router.Route("/api/v1/admin/client/isbn/{isbn}", ClientIsbn)
 
+	router.Route("/admin", Index).Methods("GET")
+
+	router.Route("/admin/books", Books).Methods("GET")
+
 	router.Route("/admin/book/add", BookAddGet).Methods("GET")
 	router.Route("/admin/book/add", BookAddPost).Methods("POST")
 
 	router.Route("/admin/book/{isbn}", BookEditGet).Methods("GET")
 	router.Route("/admin/book/{isbn}", BookEditPost).Methods("POST")
-
-	router.Route("/admin/books", Books).Methods("GET")
 }
 
 type DeleteResponse struct {
 	Success bool   `json:"success"`
 	Error   string `json:"error"`
+}
+
+func parseAdminTemplates() {
+	mT = make(map[string]*template.Template)
+
+	var templates []string
+	var required []string
+	err := filepath.Walk(templateDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// regardless of directory required templates with '_' are required
+		// for parsing and cannont be called directly
+		if filepath.Base(path)[0] == '_' {
+			required = append(required, path)
+			return nil
+		}
+
+		// add files that are only in the "admin" directory and any subsequent directories
+		if dir, _ := filepath.Split(path); strings.Contains(dir, "admin") {
+			templates = append(templates, path)
+		}
+
+		return nil
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, t := range templates {
+		fn := filepath.Base(t)
+		tm := template.Must(template.ParseFiles(append([]string{t}, required...)...)) // the template in question needs to be first, then required templates
+		if err != nil {
+			log.Fatal(err)
+		}
+		mT[fn] = tm
+	}
+
 }
 
 /* HELPER FUNCTIONS */

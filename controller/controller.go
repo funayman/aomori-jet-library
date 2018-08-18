@@ -24,13 +24,19 @@ func init() {
 		if err != nil {
 			return err
 		}
-		if !info.IsDir() {
-			// paths = append(paths, path)
-			if filepath.Base(path)[0] == '_' {
-				required = append(required, path)
-			} else {
-				templates = append(templates, path)
+
+		if info.IsDir() {
+			if info.Name() == "admin" {
+				return filepath.SkipDir
 			}
+			return nil
+		}
+
+		// paths = append(paths, path)
+		if filepath.Base(path)[0] == '_' {
+			required = append(required, path)
+		} else {
+			templates = append(templates, path)
 		}
 		return nil
 	})
