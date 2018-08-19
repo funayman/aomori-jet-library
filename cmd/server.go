@@ -45,7 +45,7 @@ var serverCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("starting server...")
-		server.Start(router.Instance(), server.Server{Port: 8081})
+		server.Start(router.Instance(), server.Server{Port: port})
 	},
 }
 
