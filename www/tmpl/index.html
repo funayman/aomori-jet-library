@@ -21,6 +21,11 @@
       </div>
     </div>
 
+    <nav aria-label="book navigation">
+      <ul class="pagination justify-content-center">
+      </ul>
+    </nav>
+
     <ul class="list list-unstyled">
       {{range .Books}}
       <li class="media">
@@ -34,10 +39,6 @@
       {{end}}
     </ul>
 
-    <nav aria-label="book navigation">
-      <ul class="pagination">
-      </ul>
-    </nav>
   </div> <!-- end books-list -->
 </section>
 {{end}}

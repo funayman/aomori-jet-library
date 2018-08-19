@@ -75,6 +75,11 @@ func parseAdminTemplates() {
 			return err
 		}
 
+		// worry only about html files
+		if filepath.Ext(path) != ".html" {
+			return nil
+		}
+
 		// regardless of directory required templates with '_' are required
 		// for parsing and cannont be called directly
 		if filepath.Base(path)[0] == '_' {

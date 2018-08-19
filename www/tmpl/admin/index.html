@@ -7,5 +7,92 @@
 {{define "content"}}
 <section class="container-fluid" style="margin-top: 58px;">
   <h1>Status Report</h1>
+  <p>Total Books: {{.Total}}</p>
 </section>
+
+<section class="container-fluid">
+  <h2>Recently Added Books</h2>
+  <div class="row">
+  {{ range .Books }}
+  <div class="col">
+  <div class="card" style="width: 18rem;;margin:10px">
+    <h5 class="card-header" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{.Title}}</h5>
+    <div class="card-img-top" style="background:url({{.ImgSrc}}) no-repeat center center; background-size:cover;display:block;height:180px"></div>
+    <div class="card-body" style="padding:1.5rem 1.25rem;">
+      <p class="text-right font-italic">{{.PrintAuthors}}</p>
+      <p>{{.ShortDesc}}</p>
+      <div style="position:absolute;bottom:0;margin-bottom:3px">
+            <a href="/book/{{ .Isbn }}" class="btn btn-success btn-sm"><strong>VIEW</strong></a>
+            <a href="/admin/book/{{ .Isbn }}" class="btn btn-warning btn-sm"><strong>EDIT</strong></a>
+            <button type="button" class="btn btn-danger btn-sm" data-isbn="{{.Isbn}}" data-title="{{.Title}}" data-target="#del-modal" data-toggle="modal"><strong>DELETE</strong></a>
+      </div>
+    </div>
+  </div>
+  </div>
+  {{ end }}
+  </div>
+</section>
+
+<div class="modal fade" id="del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are You Sure?</h5>
+      </div>
+      <div class="modal-body">
+        <p>You are about to delete <strong><span id="del-title"></span></strong>, please confirm by clicking the button below</p>
+        <div id="del-err-alert" class="alert alert-danger" role="alert"> </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+        <button type="button" class="btn btn-danger" id="modal-del-btn">DELETE</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{ define "scripts" }}
+<script>
+var options = {
+  valueNames: [ 'title', 'author', 'isbn']
+};
+var userList = new List('books', options);
+
+$('#del-modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var title = button.data('title')
+  var isbn = button.data('isbn')
+  var modal = $(this)
+  var errAlert = modal.find('.modal-body #del-err-alert')
+  errAlert.hide()
+  modal.find('.modal-body #del-title').text(title)
+  var delBtn = modal.find('#modal-del-btn')
+  delBtn.click(function() {
+    delBtn.attr("disabled", "disabled")
+    $.ajax({
+      url: '/api/v1/book/isbn/' + isbn,
+      method: 'DELETE',
+    }).done(function(data, textStatus, jqXHR) {
+      if(textStatus == 'nocontent') {
+        errAlert.show()
+        errAlert.text("isbn not found")
+      } else {
+        modal.modal('hide')
+        button.closest('tr').remove()
+      }
+    }).fail(function( jqXHR, textStatus, errorThrown ) {
+      // log errors
+      console.log(jqXHR, textStatus, errorThrown)
+
+      // update alert
+      errAlert.show()
+      errAlert.text("invalid isbn")
+    }).always(function() {
+      // re-enable button
+      delBtn.removeAttr("disabled")
+    })
+  })
+})
+</script>
 {{end}}
