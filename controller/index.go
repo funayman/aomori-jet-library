@@ -30,7 +30,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	// 	log.Println(err)
 	// }
 
-	if err := mT["index.html"].Execute(w, &page{Title: "Aomori AJET Library", Books: books}); err != nil {
+	if err := mT["index.html"].Execute(w, &page{Title: "Aomori JET Library", Books: books}); err != nil {
 		log.Println(err)
 	}
 }
