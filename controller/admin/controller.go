@@ -45,19 +45,19 @@ func Load() {
 	// According to documentation:
 	// 		init() is always called, regardless if there's main or not,
 	// 		if you import a package that has an init function, it will be executed
-	router.Route("/api/v1/book/isbn/{isbn}", DeleteBook).Methods("DELETE")
+	router.RouteAuth("/api/v1/book/isbn/{isbn}", DeleteBook).Methods("DELETE")
 
 	router.Route("/api/v1/admin/client/isbn/{isbn}", ClientIsbn)
 
-	router.Route("/admin", Index).Methods("GET")
+	router.RouteAuth("/admin", Index).Methods("GET")
 
-	router.Route("/admin/books", Books).Methods("GET")
+	router.RouteAuth("/admin/books", Books).Methods("GET")
 
-	router.Route("/admin/book/add", BookAddGet).Methods("GET")
-	router.Route("/admin/book/add", BookAddPost).Methods("POST")
+	router.RouteAuth("/admin/book/add", BookAddGet).Methods("GET")
+	router.RouteAuth("/admin/book/add", BookAddPost).Methods("POST")
 
-	router.Route("/admin/book/{isbn}", BookEditGet).Methods("GET")
-	router.Route("/admin/book/{isbn}", BookEditPost).Methods("POST")
+	router.RouteAuth("/admin/book/{isbn}", BookEditGet).Methods("GET")
+	router.RouteAuth("/admin/book/{isbn}", BookEditPost).Methods("POST")
 }
 
 type DeleteResponse struct {

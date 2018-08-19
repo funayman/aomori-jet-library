@@ -6,6 +6,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
+const (
+	USERNAME = "librarian"
+	PASSWORD = "ilikebooks"
+)
+
 var (
 	r RouteHolder
 )
@@ -30,6 +35,21 @@ func Instance() *mux.Router {
 
 func Route(path string, fn http.HandlerFunc) *mux.Route {
 	return r.HandleFunc(path, fn)
+}
+
+func RouteAuth(path string, fn http.HandlerFunc) *mux.Route {
+	//https://gist.github.com/elithrar/9146306#gistcomment-2145050
+	return r.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+
+		w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+
+		if username, password, ok := r.BasicAuth(); !ok || !(username == USERNAME && password == PASSWORD) {
+			http.Error(w, "Not authorized", 401)
+			return
+		}
+
+		fn.ServeHTTP(w, r)
+	})
 }
 
 func RouteStatic(path, dir string) *mux.Route {
