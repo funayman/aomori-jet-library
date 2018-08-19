@@ -39,7 +39,7 @@ func Route(path string, fn http.HandlerFunc) *mux.Route {
 
 func RouteAuth(path string, fn http.HandlerFunc) *mux.Route {
 	//https://gist.github.com/elithrar/9146306#gistcomment-2145050
-	return r.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	return Route(path, func(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
 
