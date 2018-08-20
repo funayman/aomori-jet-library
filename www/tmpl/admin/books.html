@@ -92,7 +92,7 @@ $('#del-modal').on('show.bs.modal', function (event) {
     }).done(function(data, textStatus, jqXHR) {
       if(textStatus == 'nocontent') {
         errAlert.show()
-        errAlert.text("isbn not found")
+        errAlert.text('invalid isbn')
       } else {
         modal.modal('hide')
         button.closest('tr').remove()
@@ -103,7 +103,7 @@ $('#del-modal').on('show.bs.modal', function (event) {
 
       // update alert
       errAlert.show()
-      errAlert.text("invalid isbn")
+      errAlert.text(jqXHR.responseJSON.error)
     }).always(function() {
       // re-enable button
       delBtn.removeAttr("disabled")

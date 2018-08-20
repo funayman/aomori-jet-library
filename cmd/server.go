@@ -22,6 +22,7 @@ import (
 	"github.com/funayman/aomori-library/router"
 	"github.com/funayman/aomori-library/server"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -36,6 +37,10 @@ var serverCmd = &cobra.Command{
 	Short: "run in server mode",
 	// Long: `This is the log desc`,
 	PreRun: func(cmd *cobra.Command, args []string) {
+		port = viper.GetInt("server.port")
+		ip = viper.GetString("server.ip")
+		withAdmin = viper.GetBool("server.admin")
+
 		fmt.Println("loading controllers")
 		controller.Load()
 
@@ -60,7 +65,11 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	serverCmd.Flags().IntVar(&port, "port", 8081, "port for the server to run on (default 8081)")
-	serverCmd.Flags().StringVar(&ip, "ip", "", "IP address for the server (default is localhost)")
-	serverCmd.Flags().BoolVarP(&withAdmin, "admin", "", false, "allows all admin routes/API calls to be loaded")
+	serverCmd.Flags().Int("port", 8081, "port for the server to run on (default 8081)")
+	serverCmd.Flags().String("ip", "", "IP address for the server (default is localhost)")
+	serverCmd.Flags().BoolP("admin", "", false, "allows all admin routes/API calls to be loaded")
+
+	viper.BindPFlag("server.port", serverCmd.Flags().Lookup("port"))
+	viper.BindPFlag("server.ip", serverCmd.Flags().Lookup("ip"))
+	viper.BindPFlag("server.admin", serverCmd.Flags().Lookup("admin"))
 }
