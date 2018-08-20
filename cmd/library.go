@@ -36,7 +36,7 @@ and Dave Derderian (https://drt.sh).`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		fmt.Println("connecting to db...")
-		db.Connect(database, dbReadOnly)
+		db.Connect(viper.GetString("db.conn"), viper.GetBool("db.readonly"))
 
 		fmt.Println("initing isbn/book clients")
 		client.Init(&client.Cfg{
@@ -66,8 +66,11 @@ func init() {
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/"+defaultConfigFile+".yaml)")
 
-	rootCmd.PersistentFlags().StringVarP(&database, "database", "d", db.DefaultConnection, "connects to BoltDB database at specified location (default ./"+db.DefaultConnection+")")
-	rootCmd.PersistentFlags().BoolVarP(&dbReadOnly, "readonly", "r", false, "connects to database in read-only mode. changes cannot be made")
+	rootCmd.PersistentFlags().StringP("database", "d", db.DefaultConnection, "connects to BoltDB database at specified location (default ./"+db.DefaultConnection+")")
+	rootCmd.PersistentFlags().BoolP("readonly", "r", false, "connects to database in read-only mode. changes cannot be made")
+
+	viper.BindPFlag("db.conn", rootCmd.PersistentFlags().Lookup("database"))
+	viper.BindPFlag("db.readonly", rootCmd.PersistentFlags().Lookup("readonly"))
 }
 
 // initConfig reads in config file and ENV variables if set.
