@@ -12,21 +12,21 @@ var (
 	client  *http.Client
 )
 
-const (
-	IsbnDbKey    = "IsbnDB API Key"
-	GoodReadsKey = "GoodReads API Key"
-)
+type Cfg struct {
+	IsbnDbKey    string
+	GoodReadsKey string
+}
 
 type Client interface {
 	Query(q string, p map[string]string) []*book.Book
 	QueryIsbn(isbn string) *book.Book
 }
 
-func Init() {
+func Init(cfg *Cfg) {
 	client = &http.Client{}
 	clients = []Client{
-		&IsbnDbClient{key: IsbnDbKey, client: client},
-		&GoodReadsClient{key: GoodReadsKey, client: client},
+		&IsbnDbClient{key: cfg.IsbnDbKey, client: client},
+		&GoodReadsClient{key: cfg.GoodReadsKey, client: client},
 		&OpenLibraryClient{client: client},
 	}
 }

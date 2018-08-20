@@ -39,12 +39,14 @@ and Dave Derderian (https://drt.sh).`,
 		db.Connect(database, dbReadOnly)
 
 		fmt.Println("initing isbn/book clients")
-		client.Init()
+		client.Init(&client.Cfg{
+			IsbnDbKey:    viper.GetString("api.isbndb"),
+			GoodReadsKey: viper.GetString("api.goodreads"),
+		})
 
 	},
 
-	Run: func(cmd *cobra.Command, args []string) {
-	},
+	Run: func(cmd *cobra.Command, args []string) {},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
