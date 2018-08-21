@@ -2,8 +2,9 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+
+	"github.com/funayman/aomori-library/logger"
 )
 
 type Server struct {
@@ -16,6 +17,6 @@ func (s Server) address() string {
 }
 
 func Start(r http.Handler, s Server) {
-	log.Println("webserver started on: " + s.address())
-	log.Fatal(http.ListenAndServe(s.address(), r))
+	logger.Info("webserver started on: " + s.address())
+	logger.Fatal(http.ListenAndServe(s.address(), r))
 }
