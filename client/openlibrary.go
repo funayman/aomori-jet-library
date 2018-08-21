@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
+	"github.com/funayman/aomori-library/logger"
 	"github.com/funayman/aomori-library/model"
 	"github.com/funayman/aomori-library/model/book"
 )
@@ -77,18 +77,18 @@ func (c *OpenLibraryClient) QueryIsbn(isbn string) (b *book.Book) {
 	url := fmt.Sprintf("http://openlibrary.org/api/books?bibkeys=ISBN:%s&format=json&jscmd=data", isbn)
 	resp, err := c.client.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("cannot reach open library: ", err)
 	}
 
 	byteData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("cannot read open library response.Body: ", err)
 	}
 
 	var m map[string]openLibraryApiResponse
 	err = json.Unmarshal(byteData, &m)
 	if err != nil {
-		log.Println("[openlibrary] error parsing json", err)
+		logger.Errorf("cannot parse open library json data: %s\nerror: %s\n", string(byteData), err)
 		return
 	}
 

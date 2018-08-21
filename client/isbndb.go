@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
+	"github.com/funayman/aomori-library/logger"
 	"github.com/funayman/aomori-library/model"
 	"github.com/funayman/aomori-library/model/book"
 )
@@ -55,24 +55,24 @@ func (c *IsbnDbClient) QueryIsbn(isbn string) (b *book.Book) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("cannot create new request for isbndb: ", err)
 	}
 	req.Header.Set("X-API-Key", c.key)
 
 	resp, err := c.client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("cannot reach isbndb: ", err)
 	}
 
 	byteData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("cannot read isbndb response.Body: ", err)
 	}
 
 	var data IsbnDbResponse
 	err = json.Unmarshal(byteData, &data)
 	if err != nil {
-		log.Println("[isbndb] error parsing json", err)
+		logger.Errorf("cannot parse isbndb json data: %s\nerror: %s\n", string(byteData), err.Error())
 		return
 	}
 

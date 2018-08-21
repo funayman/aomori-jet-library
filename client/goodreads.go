@@ -4,9 +4,9 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
+	"github.com/funayman/aomori-library/logger"
 	"github.com/funayman/aomori-library/model"
 	"github.com/funayman/aomori-library/model/book"
 )
@@ -53,7 +53,7 @@ func (c *GoodReadsClient) QueryIsbn(isbn string) (b *book.Book) {
 	url := fmt.Sprintf("%s/%s?key=%s", BooksUrl, isbn, c.key)
 	resp, err := c.client.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		logger.Errorf("cannot get response from goodreads url: ", err)
 	}
 
 	if resp.StatusCode != 200 {
@@ -62,13 +62,13 @@ func (c *GoodReadsClient) QueryIsbn(isbn string) (b *book.Book) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("cannot read body from goodreads response: ", err)
 	}
 
 	var data goodReadsResponse
 	err = xml.Unmarshal(body, &data)
 	if err != nil {
-		log.Println("[openlibrary] error parsing json", err)
+		logger.Error("error parsing goodreads xml data: ", err)
 		return
 	}
 
