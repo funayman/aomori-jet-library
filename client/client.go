@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/funayman/aomori-library/model/book"
@@ -37,12 +36,4 @@ func FindBookByIsbn(isbn string) *book.Book {
 		book.Merge(client.QueryIsbn(isbn))
 	}
 	return book
-}
-
-func buildGetParams(params map[string]string) (p string) {
-	for k, v := range params {
-		p = fmt.Sprintf("%s%s=%s&", p, k, v)
-	}
-
-	return
 }
